@@ -14,31 +14,50 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
 
-        // ✅ lowercase + trim for safety
         const email = credentials.email.toLowerCase().trim();
         const password = credentials.password.trim();
 
-        const user = await prisma.adminUser.findUnique({ where: { email } });
+        const user = await prisma.adminUser.findUnique({
+          where: { email },
+        });
 
-        // Debug (optional, remove in production)
-        console.log("INPUT EMAIL:", email);
-        console.log("INPUT PASSWORD:", password);
-        if (user) console.log("DB HASH:", user.password);
+        if (!user) return null;
 
-        const isValid = user ? await compare(password, user.password) : false;
-        console.log("PASSWORD MATCH:", isValid);
+        const isValid = await compare(password, user.password);
+        if (!isValid) return null;
 
-        if (!user || !isValid) return null;
-
-        return { id: user.id.toString(), email: user.email, name: "Admin" };
+        return {
+          id: user.id.toString(),
+          email: user.email,
+          name: "Admin",
+        };
       },
     }),
   ],
+
   pages: {
     signIn: "/admin/login",
   },
+
   session: {
     strategy: "jwt",
   },
+
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id as string;
+      }
+      return session;
+    },
+  },
+
   secret: process.env.NEXTAUTH_SECRET,
 };
