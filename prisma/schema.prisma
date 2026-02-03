@@ -1,0 +1,110 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model AdminUser {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model WaitlistEntry {
+  id          Int      @id @default(autoincrement())
+  email       String
+  role        String
+  referrer    String?
+  invited     Boolean  @default(false)
+  submittedAt DateTime @default(now())
+}
+
+model ContactSubmission {
+  id          Int      @id @default(autoincrement())
+  name        String
+  email       String
+  type        String
+  message     String
+  resolved    Boolean  @default(false)
+  submittedAt DateTime @default(now())
+}
+
+model CareerApplication {
+  id          Int      @id @default(autoincrement())
+  jobTitle    String
+  name        String
+  email       String
+  phone       String
+  portfolio   String?   // Optional column
+  resume      String
+  coverLetter String?
+  status      String   @default("Pending")
+  submittedAt DateTime @default(now())
+}
+
+
+model JobListing {
+  id          Int      @id @default(autoincrement())
+  title       String
+  location    String
+  type        String
+  salaryRange String?
+  description String
+  image       String
+  active      Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model SiteSettings {
+  id             Int     @id @default(1)
+  heroTitle      String
+  heroSubtitle   String
+  heroButtonText String
+  heroBgImage    String? 
+  
+  showTestimonials Boolean @default(true)
+  showStats        Boolean @default(true)
+  showWhy          Boolean @default(true)
+  showPhoneMockups Boolean @default(true)
+}
+
+model FAQ {
+  id        Int      @id @default(autoincrement())
+  question  String
+  answer    String
+  order     Int      @default(0)
+}
+
+model LegalContent {
+  id        Int      @id @default(autoincrement())
+  type      String   @unique 
+  content   String
+  updatedAt DateTime @updatedAt
+}
+
+model AboutContent {
+  id              Int      @id @default(1)
+  story           String   // Stored as JSON string or long text
+  mission         String
+  founderMessage  String
+  founderName     String
+  founderRole     String
+  updatedAt       DateTime @updatedAt
+}
+
+model CompanyValue {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  icon        String
+  image       String
+  order       Int      @default(0)
+}
