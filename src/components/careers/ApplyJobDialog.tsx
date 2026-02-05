@@ -1,9 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
     Dialog,
     DialogContent,
@@ -11,11 +8,13 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Loader2, ArrowRight } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
 import { submitApplication } from "@/lib/actions";
+import { ArrowRight, Loader2 } from "lucide-react";
+import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import { motion } from "framer-motion";
 
 interface JobListing {
     id: number;
@@ -121,10 +120,17 @@ export function ApplyJobDialog({ job, trigger }: { job: JobListing; trigger: Rea
                                     id="phone"
                                     name="phone"
                                     required
-                                    className="h-16 px-6 rounded-2xl bg-secondary/30 border-transparent hover:bg-secondary/50 focus:bg-background focus:border-primary/20 focus:ring-4 focus:ring-primary/5 transition-all text-lg shadow-sm"
-                                    placeholder="+91 98765 43210"
                                     type="tel"
+                                    pattern="[0-9]{10}"
+                                    maxLength={10}
+                                    onInput={(e) => {
+                                        const target = e.target as HTMLInputElement;
+                                        target.value = target.value.replace(/[^0-9]/g, '').slice(0, 10);
+                                    }}
+                                    className="h-16 px-6 rounded-2xl bg-secondary/30 border-transparent hover:bg-secondary/50 focus:bg-background focus:border-primary/20 focus:ring-4 focus:ring-primary/5 transition-all text-lg shadow-sm"
+                                    placeholder="9876543210"
                                 />
+                                <p className="text-sm font-medium text-muted-foreground ml-1">Enter 10-digit phone number (numbers only)</p>
                             </div>
 
                             <div className="space-y-3">
