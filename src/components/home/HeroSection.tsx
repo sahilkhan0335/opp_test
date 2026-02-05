@@ -1,9 +1,9 @@
 "use client";
 
-import { useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
 import { useWaitlistModal } from "@/contexts/WaitlistModalContext";
+import { motion } from "framer-motion";
+import Link from "next/link";
 
 interface HeroSectionProps {
     hero: {
@@ -20,11 +20,11 @@ const HeroSection = ({ hero }: HeroSectionProps) => {
     return (
         <section className="relative min-h-[90vh] flex flex-col items-center overflow-hidden bg-background pt-20 pb-20">
             {/* Background Pattern: Dot Grid */}
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-size[24px_24px] pointer-events-none" />
 
             {/* Abstract Background Blobs */}
-            <div className="absolute top-[20%] left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[120px] pointer-events-none -z-10" />
-            <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[100px] pointer-events-none -z-10 opacity-70" />
+            <div className="absolute top-[20%] left-1/2 -translate-x-1/2 w-200 h-200 bg-primary/5 rounded-full blur-[120px] pointer-events-none -z-10" />
+            <div className="absolute bottom-[-10%] right-[-10%] w-150 h-150 bg-blue-500/5 rounded-full blur-[100px] pointer-events-none -z-10 opacity-70" />
 
             <div className="container mx-auto px-6 text-center z-10 flex flex-col items-center">
                 <motion.div
@@ -55,13 +55,15 @@ const HeroSection = ({ hero }: HeroSectionProps) => {
                         >
                             {hero.heroButtonText || "Get Early Access"}
                         </Button>
-                        <Button
-                            variant="outline"
-                            size="lg"
-                            className="h-16 px-10 rounded-full text-xl font-bold border-2 bg-transparent hover:bg-secondary transition-all"
-                        >
-                            How it works
-                        </Button>
+                        <Link href="/features">
+                            <Button
+                                variant="outline"
+                                size="lg"
+                                className="h-16 px-10 rounded-full text-xl font-bold border-2 bg-transparent hover:bg-secondary transition-all"
+                            >
+                                Features
+                            </Button>
+                        </Link>
                     </div>
                 </motion.div>
             </div>
