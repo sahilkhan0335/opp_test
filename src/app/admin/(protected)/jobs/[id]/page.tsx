@@ -1,10 +1,16 @@
-import JobForm from "@/components/admin/JobForm";
 import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
+import JobForm from "../../../../../components/admin/JobForm";
 
-export default async function EditJobPage({ params }: { params: { id: string } }) {
+export default async function EditJobPage({ 
+    params 
+}: { 
+    params: Promise<{ id: string }> 
+}) {
+    const { id } = await params;
+    
     const job = await prisma.jobListing.findUnique({
-        where: { id: parseInt(params.id) },
+        where: { id: parseInt(id) },
     });
 
     if (!job) {

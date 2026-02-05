@@ -16,7 +16,7 @@ interface JobFormData {
     title: string;
     location: string;
     type: string;
-    salaryRange?: string;
+    salaryRange?: string | null;
     description: string;
     image: string;
     active: boolean;
@@ -95,7 +95,7 @@ export default function JobForm({ initialData }: { initialData?: JobFormData }) 
                     <Label htmlFor="salaryRange">Salary Range (Optional)</Label>
                     <Input
                         id="salaryRange"
-                        value={formData.salaryRange}
+                        value={formData.salaryRange || ""}
                         onChange={(e) => setFormData({ ...formData, salaryRange: e.target.value })}
                         placeholder="e.g. $80k - $120k"
                     />
