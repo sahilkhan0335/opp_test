@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/db";
+import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 // --- EXISTING ACTIONS ---
@@ -33,7 +34,7 @@ export async function getWaitlistCount() {
     try {
         const count = await prisma.waitlistEntry.count();
         return count;
-    } catch (error) {
+    } catch {
         return 0;
     }
 }
@@ -102,24 +103,24 @@ export async function updateSiteSettings(formData: FormData) {
 // --- NEW CRUD ACTIONS ---
 
 // FAQs
-export async function createFAQ(data: any) {
+export async function createFAQ(data: Prisma.FAQCreateInput) {
     try {
         await prisma.fAQ.create({ data });
         revalidatePath("/faq");
         revalidatePath("/admin/faq");
         return { success: true };
-    } catch (error) {
+    } catch {
         return { success: false, error: "Failed to create FAQ" };
     }
 }
 
-export async function updateFAQ(id: number, data: any) {
+export async function updateFAQ(id: number, data: Prisma.FAQUpdateInput) {
     try {
         await prisma.fAQ.update({ where: { id }, data });
         revalidatePath("/faq");
         revalidatePath("/admin/faq");
         return { success: true };
-    } catch (error) {
+    } catch {
         return { success: false, error: "Failed to update FAQ" };
     }
 }
@@ -130,14 +131,14 @@ export async function deleteFAQ(id: number) {
         revalidatePath("/faq");
         revalidatePath("/admin/faq");
         return { success: true };
-    } catch (error) {
+    } catch {
         return { success: false, error: "Failed to delete FAQ" };
     }
 }
 
-export async function updateFaqs(faqs: any[]) {
+export async function updateFaqs(faqs: Prisma.FAQCreateInput[]) {
     try {
-        await prisma.$transaction(async (tx: any) => {
+        await prisma.$transaction(async (tx) => {
             await tx.fAQ.deleteMany({});
             for (const faq of faqs) {
                 await tx.fAQ.create({ data: faq });
@@ -170,24 +171,24 @@ export async function updateLegalContent(type: string, content: string) {
 }
 
 // Jobs
-export async function createJob(data: any) {
+export async function createJob(data: Prisma.JobListingCreateInput) {
     try {
         await prisma.jobListing.create({ data });
         revalidatePath("/careers");
         revalidatePath("/admin/jobs");
         return { success: true };
-    } catch (error) {
+    } catch {
         return { success: false, error: "Failed to create job" };
     }
 }
 
-export async function updateJob(id: number, data: any) {
+export async function updateJob(id: number, data: Prisma.JobListingUpdateInput) {
     try {
         await prisma.jobListing.update({ where: { id }, data });
         revalidatePath("/careers");
         revalidatePath("/admin/jobs");
         return { success: true };
-    } catch (error) {
+    } catch {
         return { success: false, error: "Failed to update job" };
     }
 }
@@ -198,7 +199,7 @@ export async function deleteJob(id: number) {
         revalidatePath("/careers");
         revalidatePath("/admin/jobs");
         return { success: true };
-    } catch (error) {
+    } catch {
         return { success: false, error: "Failed to delete job" };
     }
 }
@@ -216,7 +217,7 @@ export async function reorderJobs(items: { id: number, order: number }[]) {
         revalidatePath("/careers");
         revalidatePath("/admin/jobs");
         return { success: true };
-    } catch (e) {
+    } catch {
         return { success: false, error: "Failed to reorder" };
     }
 }
@@ -228,17 +229,17 @@ export async function deleteWaitlistEntry(id: number) {
         await prisma.waitlistEntry.delete({ where: { id } });
         revalidatePath("/admin/waitlist");
         return { success: true };
-    } catch (error) {
+    } catch {
         return { success: false, error: "Failed to delete entry" };
     }
 }
 
-export async function updateWaitlistEntry(id: number, data: any) {
+export async function updateWaitlistEntry(id: number, data: Prisma.WaitlistEntryUpdateInput) {
     try {
         await prisma.waitlistEntry.update({ where: { id }, data });
         revalidatePath("/admin/waitlist");
         return { success: true };
-    } catch (error) {
+    } catch {
         return { success: false, error: "Failed to update entry" };
     }
 }
@@ -250,7 +251,7 @@ export async function bulkDeleteWaitlist(ids: number[]) {
         });
         revalidatePath("/admin/waitlist");
         return { success: true };
-    } catch (error) {
+    } catch {
         return { success: false, error: "Failed to bulk delete" };
     }
 }
@@ -263,7 +264,7 @@ export async function bulkInviteWaitlist(ids: number[]) {
         });
         revalidatePath("/admin/waitlist");
         return { success: true };
-    } catch (error) {
+    } catch {
         return { success: false, error: "Failed to bulk invite" };
     }
 }
@@ -274,17 +275,17 @@ export async function deleteContactSubmission(id: number) {
         await prisma.contactSubmission.delete({ where: { id } });
         revalidatePath("/admin/contact");
         return { success: true };
-    } catch (error) {
+    } catch {
         return { success: false, error: "Failed to delete contact" };
     }
 }
 
-export async function updateContactSubmission(id: number, data: any) {
+export async function updateContactSubmission(id: number, data: Prisma.ContactSubmissionUpdateInput) {
     try {
         await prisma.contactSubmission.update({ where: { id }, data });
         revalidatePath("/admin/contact");
         return { success: true };
-    } catch (error) {
+    } catch {
         return { success: false, error: "Failed to update contact" };
     }
 }
@@ -295,17 +296,17 @@ export async function deleteCareerApplication(id: number) {
         await prisma.careerApplication.delete({ where: { id } });
         revalidatePath("/admin/careers");
         return { success: true };
-    } catch (error) {
+    } catch {
         return { success: false, error: "Failed to delete application" };
     }
 }
 
-export async function updateCareerApplication(id: number, data: any) {
+export async function updateCareerApplication(id: number, data: Prisma.CareerApplicationUpdateInput) {
     try {
         await prisma.careerApplication.update({ where: { id }, data });
         revalidatePath("/admin/careers");
         return { success: true };
-    } catch (error) {
+    } catch {
         return { success: false, error: "Failed to update application" };
     }
 }
@@ -354,7 +355,7 @@ export async function deleteAdminUser(id: number) {
         await prisma.adminUser.delete({ where: { id } });
         revalidatePath("/admin/users");
         return { success: true };
-    } catch (error) {
+    } catch {
         return { success: false, error: "Failed to delete admin" };
     }
 }
@@ -397,8 +398,8 @@ export async function submitApplication(formData: FormData) {
         });
         revalidatePath("/admin/careers");
         return { success: true };
-    } catch (error: any) {
+    } catch (error) {
         console.error("Application submission error:", error);
-        return { success: false, error: error.message || "Failed to submit application" };
+        return { success: false, error: error instanceof Error ? error.message : "Failed to submit application" };
     }
 }
