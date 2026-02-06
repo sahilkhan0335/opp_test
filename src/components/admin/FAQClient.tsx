@@ -9,7 +9,6 @@ import {
     DialogContent,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from "@/components/ui/dialog";
 import { Plus, Pencil, Trash2, Loader2 } from "lucide-react";
 import { createFAQ, updateFAQ, deleteFAQ } from "@/lib/actions";
