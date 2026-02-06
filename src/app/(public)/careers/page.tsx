@@ -1,7 +1,6 @@
-import Link from "next/link";
-import { prisma } from "@/lib/db";
-import { Card } from "@/components/ui/card";
 import { ApplyJobDialog } from "@/components/careers/ApplyJobDialog";
+import { Button } from "@/components/ui/button";
+import { prisma } from "@/lib/db";
 
 interface JobListing {
     id: number;
@@ -13,7 +12,6 @@ interface JobListing {
     image: string;
     active: boolean;
 }
-import { Button } from "@/components/ui/button";
 
 export default async function CareersPage() {
     const jobs = await prisma.jobListing.findMany({
@@ -41,7 +39,7 @@ export default async function CareersPage() {
                     jobs.map((job: JobListing) => (
                         <div key={job.id} className="block group w-full">
                             <div className="flex flex-col md:flex-row gap-8 p-8 md:p-12 items-start md:items-center bg-secondary/30 hover:bg-secondary rounded-[2.5rem] transition-all duration-300 border border-transparent hover:border-black/5">
-                                <div className="w-full md:w-64 h-48 md:h-40 rounded-[1.5rem] overflow-hidden flex-shrink-0">
+                                <div className="w-full md:w-64 h-48 md:h-40 rounded-[1.5rem] overflow-hidden shrink-0">
                                     <img
                                         src={job.image}
                                         alt={job.title}

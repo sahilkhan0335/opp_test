@@ -1,14 +1,20 @@
 "use client";
 
-import { useTransition, useState } from "react";
-import { createAdminUser, deleteAdminUser } from "@/lib/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { toast } from "sonner";
+import { createAdminUser, deleteAdminUser } from "@/lib/actions";
 import { Loader2, Trash2 } from "lucide-react";
+import { useTransition } from "react";
+import { toast } from "sonner";
 
-export function AdminUserList({ users }: { users: any[] }) {
+interface AdminUser {
+    id: number;
+    email: string;
+    createdAt: Date;
+}
+
+export function AdminUserList({ users }: { users: AdminUser[] }) {
     const [isPending, startTransition] = useTransition();
 
     async function handleSubmit(formData: FormData) {

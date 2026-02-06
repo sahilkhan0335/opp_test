@@ -1,20 +1,38 @@
 "use client";
 
-import { useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { toast } from "sonner";
+import { Textarea } from "@/components/ui/textarea";
+import { updateFaqs, updateLegalContent, updateSiteSettings } from "@/lib/actions";
 import { Loader2, Plus, Trash2 } from "lucide-react";
-import { updateSiteSettings, updateFaqs, updateLegalContent } from "@/lib/actions";
+import { useState, useTransition } from "react";
+import { toast } from "sonner";
+
+interface SiteSettings {
+    heroTitle: string;
+    heroSubtitle: string;
+    heroButtonText: string;
+    heroBgImage?: string | null;
+    showTestimonials: boolean;
+    showStats: boolean;
+    showWhy: boolean;
+    showPhoneMockups: boolean;
+}
+
+interface FAQ {
+    id?: number;
+    question: string;
+    answer: string;
+    order: number;
+}
 
 interface SettingsClientProps {
-    initialSettings: any;
-    initialFaqs: any[];
+    initialSettings: SiteSettings;
+    initialFaqs: FAQ[];
     initialLegal: { terms: string; privacy: string };
 }
 
@@ -142,7 +160,7 @@ export default function SettingsClient({ initialSettings, initialFaqs, initialLe
                                             <Label htmlFor={key} className="cursor-pointer">{label}</Label>
                                             <Switch
                                                 id={key}
-                                                checked={(formData as any)[key]}
+                                                checked={formData[key as keyof typeof formData] as boolean}
                                                 onCheckedChange={(c) => setFormData({ ...formData, [key]: c })}
                                             />
                                         </div>
@@ -163,7 +181,7 @@ export default function SettingsClient({ initialSettings, initialFaqs, initialLe
                             <h3 className="text-lg font-semibold">Frequently Asked Questions</h3>
                             <Button onClick={addFaq} size="sm" variant="outline"><Plus className="mr-2 h-4 w-4" /> Add FAQ</Button>
                         </div>
-                        <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2">
+                        <div className="space-y-4 max-h-150 overflow-y-auto pr-2">
                             {faqs.map((faq, idx) => (
                                 <div key={idx} className="p-4 border rounded-md bg-muted/20 relative group">
                                     <Button
@@ -201,7 +219,7 @@ export default function SettingsClient({ initialSettings, initialFaqs, initialLe
                         <Card className="p-6">
                             <h3 className="text-lg font-semibold mb-4">Terms of Service</h3>
                             <Textarea
-                                className="min-h-[400px] font-mono text-sm"
+                                className="min-h-100 font-mono text-sm"
                                 value={legal.terms}
                                 onChange={e => setLegal({ ...legal, terms: e.target.value })}
                             />
@@ -210,7 +228,7 @@ export default function SettingsClient({ initialSettings, initialFaqs, initialLe
                         <Card className="p-6">
                             <h3 className="text-lg font-semibold mb-4">Privacy Policy</h3>
                             <Textarea
-                                className="min-h-[400px] font-mono text-sm"
+                                className="min-h-100 font-mono text-sm"
                                 value={legal.privacy}
                                 onChange={e => setLegal({ ...legal, privacy: e.target.value })}
                             />
