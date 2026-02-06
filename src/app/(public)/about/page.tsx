@@ -40,7 +40,7 @@ export default async function AboutPage() {
                 <div>
                     <h1 className="text-7xl sm:text-8xl lg:text-9xl font-bold mb-12 tracking-tighter leading-[0.9]">
                         About <br />
-                        <span className="font-orbitron font-semibold text-primary">oppspaces</span>
+                        <span className="font-orbitron font-semibold text-primary ">oppspaces</span>
                     </h1>
                 </div>
                 <div className="pt-4 lg:pt-8">
