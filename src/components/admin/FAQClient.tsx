@@ -98,9 +98,9 @@ export function FAQClient({ faqs }: { faqs: FAQ[] }) {
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead className="w-[300px]">Question</TableHead>
+                            <TableHead className="w-300px">Question</TableHead>
                             <TableHead>Answer</TableHead>
-                            <TableHead className="w-[100px] text-right">Actions</TableHead>
+                            <TableHead className="w-100px text-right">Actions</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>

@@ -10,7 +10,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { Trash2, Loader2, Plus, GripVertical, Pencil } from "lucide-react";
+import { Trash2, Plus, GripVertical, Pencil } from "lucide-react";
 import { deleteJob, updateJob } from "@/lib/actions";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";

@@ -10,12 +10,11 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { Trash2, Loader2, ExternalLink, Mail, Phone, FileText } from "lucide-react";
+import { Trash2, ExternalLink, Mail, Phone, FileText } from "lucide-react";
 import { deleteCareerApplication, updateCareerApplication } from "@/lib/actions";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
-import Link from "next/link";
 import {
     Dialog,
     DialogContent,

@@ -1,7 +1,6 @@
 
 import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Clock, MapPin, Briefcase } from "lucide-react";
 import Link from "next/link";

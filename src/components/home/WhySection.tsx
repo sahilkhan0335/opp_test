@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 const WhySection = () => {
     const features = [
@@ -64,7 +65,7 @@ const WhySection = () => {
                         >
                             <div className={index % 2 === 1 ? "lg:order-2" : ""}>
                                 <div className="relative rounded-3xl overflow-hidden shadow-soft-lg">
-                                    <img
+                                    <Image
                                         src={feature.image}
                                         alt={feature.title}
                                         className="w-full h-80 object-cover"

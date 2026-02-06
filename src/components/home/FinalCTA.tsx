@@ -18,7 +18,7 @@ const FinalCTA = () => {
             >
                 {/* Abstract background shape */}
                 <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border-[100px] border-white rounded-full blur-3xl opacity-50" />
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-800px h-800px border-100px border-white rounded-full blur-3xl opacity-50" />
                 </div>
 
                 <div className="relative z-10 max-w-4xl mx-auto">

@@ -31,7 +31,7 @@ const StatsSection = () => {
                                 <div className="text-6xl sm:text-7xl lg:text-8xl font-bold text-foreground mb-4 tracking-tighter feature-number">
                                     {stat.number}
                                 </div>
-                                <div className="text-xl text-muted-foreground font-medium border-t-2 border-primary/20 pt-4 max-w-[100px] group-hover:border-primary transition-colors duration-500">
+                                <div className="text-xl text-muted-foreground font-medium border-t-2 border-primary/20 pt-4 max-w-100px group-hover:border-primary transition-colors duration-500">
                                     {stat.label}
                                 </div>
                             </motion.div>

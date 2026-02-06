@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useState, useTransition, useRef } from "react";
+import { useState, useTransition } from "react";
 import { toast } from "sonner";
 import { submitContact } from "@/lib/actions";
 import { Label } from "@/components/ui/label";
@@ -15,7 +15,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { Loader2, ArrowRight } from "lucide-react";
+import { Loader2} from "lucide-react";
 
 export default function Contact() {
     const [isPending, startTransition] = useTransition();

@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
+import Image from "next/image";
 
 const TestimonialsSection = () => {
     const testimonials = [
@@ -64,7 +65,7 @@ const TestimonialsSection = () => {
                         >
                             <Card className="p-8 bg-secondary shadow-sm hover:shadow-md transition-all rounded-3xl border-none h-full">
                                 <div className="flex items-center gap-4 mb-6">
-                                    <img
+                                    <Image
                                         src={testimonial.image}
                                         alt={testimonial.name}
                                         className="w-16 h-16 rounded-full object-cover"

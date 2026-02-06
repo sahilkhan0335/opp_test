@@ -1,6 +1,7 @@
 import { ApplyJobDialog } from "@/components/careers/ApplyJobDialog";
 import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/db";
+import Image from "next/image";
 
 interface JobListing {
     id: number;
@@ -40,7 +41,7 @@ export default async function CareersPage() {
                         <div key={job.id} className="block group w-full">
                             <div className="flex flex-col md:flex-row gap-8 p-8 md:p-12 items-start md:items-center bg-secondary/30 hover:bg-secondary rounded-[2.5rem] transition-all duration-300 border border-transparent hover:border-black/5">
                                 <div className="w-full md:w-64 h-48 md:h-40 rounded-[1.5rem] overflow-hidden shrink-0">
-                                    <img
+                                    <Image
                                         src={job.image}
                                         alt={job.title}
                                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"

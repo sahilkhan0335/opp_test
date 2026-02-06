@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Card } from "@/components/ui/card";
+import Image from "next/image";
 import { ReactNode } from "react";
 
 const PhoneMockups = () => {
@@ -61,12 +61,12 @@ const PhoneMockups = () => {
                 <div className="grid grid-cols-1 md:grid-cols-6 gap-6 max-w-7xl mx-auto auto-rows-[400px]">
                     {/* Card 1: Large (4 cols) */}
                     <div className="md:col-span-4 group relative rounded-[2.5rem] overflow-hidden bg-[#F2F0E9] border border-black/5">
-                        <img
+                        <Image
                             src={features[0].image}
                             alt="Swipe"
                             className="absolute inset-0 w-full h-full object-cover opacity-90 transition-transform duration-700"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to- from-black/80 via-black/20 to-transparent" />
                         <div className="absolute bottom-0 left-0 p-10">
                             <div className="text-5xl mb-4 text-white">{features[0].icon}</div>
                             <h3 className="text-3xl font-bold text-white mb-2">{features[0].title}</h3>
@@ -76,7 +76,7 @@ const PhoneMockups = () => {
 
                     {/* Card 2: Tall/Narrow (2 cols) */}
                     <div className="md:col-span-2 group relative rounded-[2.5rem] overflow-hidden bg-[#E6E4DD] border border-black/5">
-                        <img
+                        <Image
                             src={features[1].image}
                             alt="Events"
                             className="absolute inset-0 w-full h-full object-cover opacity-80"
@@ -104,7 +104,7 @@ const PhoneMockups = () => {
                             </p>
                         </div>
                         <div className="relative mt-8 md:mt-0 w-full md:w-1/2 h-64 md:h-full rounded-3xl overflow-hidden shadow-xl rotate-3">
-                            <img
+                            <Image
                                 src={features[2].image}
                                 alt="Booking"
                                 className="w-full h-full object-cover"

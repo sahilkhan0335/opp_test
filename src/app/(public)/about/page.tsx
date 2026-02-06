@@ -1,6 +1,6 @@
 
 import { prisma } from "@/lib/db";
-import { notFound } from "next/navigation";
+
 
 interface CompanyValue {
     id: number;

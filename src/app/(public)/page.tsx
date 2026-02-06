@@ -1,6 +1,5 @@
 import HeroSection from "@/components/home/HeroSection";
 import PhoneMockups from "@/components/home/PhoneMockups";
-import WhySection from "@/components/home/WhySection";
 import TestimonialsSection from "@/components/home/TestimonialsSection";
 import StatsSection from "@/components/home/StatsSection";
 import FinalCTA from "@/components/home/FinalCTA";
