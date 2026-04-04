@@ -136,21 +136,33 @@ export async function deleteFAQ(id: number) {
     }
 }
 
-export async function updateFaqs(faqs: Prisma.FAQCreateInput[]) {
+export async function deduplicateFAQs() {
     try {
-        await prisma.$transaction(async (tx) => {
-            await tx.fAQ.deleteMany({});
-            for (const faq of faqs) {
-                await tx.fAQ.create({ data: faq });
+        const faqs = await prisma.fAQ.findMany();
+        const uniqueFaqs = new Map<string, number>();
+        const toDelete: number[] = [];
+
+        for (const faq of faqs) {
+            const key = `${faq.question.trim().toLowerCase()}|${faq.answer.trim().toLowerCase()}`;
+            if (uniqueFaqs.has(key)) {
+                toDelete.push(faq.id);
+            } else {
+                uniqueFaqs.set(key, faq.id);
             }
-        });
-        revalidatePath("/");
-        revalidatePath("/admin/settings");
+        }
+
+        if (toDelete.length > 0) {
+            await prisma.fAQ.deleteMany({
+                where: { id: { in: toDelete } }
+            });
+        }
+
         revalidatePath("/faq");
-        return { success: true };
+        revalidatePath("/admin/faq");
+        return { success: true, removedCount: toDelete.length };
     } catch (error) {
-        console.error("Failed to update FAQs:", error);
-        return { success: false, error: "Failed to update FAQs" };
+        console.error("Deduplication error:", error);
+        return { success: false, error: "Failed to deduplicate FAQs" };
     }
 }
 
@@ -357,6 +369,34 @@ export async function deleteAdminUser(id: number) {
         return { success: true };
     } catch {
         return { success: false, error: "Failed to delete admin" };
+    }
+}
+
+export async function updateAdminUser(id: number, formData: FormData) {
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
+    if (!email) {
+        return { success: false, error: "Email is required" };
+    }
+
+    try {
+        const data: any = { email };
+        
+        if (password && password.trim() !== "") {
+            data.password = await hash(password, 12);
+        }
+
+        await prisma.adminUser.update({
+            where: { id },
+            data
+        });
+
+        revalidatePath("/admin/users");
+        return { success: true };
+    } catch (error) {
+        console.error("Failed to update admin:", error);
+        return { success: false, error: "Failed to update admin" };
     }
 }
 
