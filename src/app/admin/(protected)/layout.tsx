@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth";
-import AdminSidebar from "@/components/admin/AdminSidebar";
+import ResponsiveAdminLayout from "@/components/admin/ResponsiveAdminLayout";
 
 export default async function AdminLayout({
     children,
@@ -15,11 +15,8 @@ export default async function AdminLayout({
     }
 
     return (
-        <div className="flex min-h-screen bg-stone-50/50 dark:bg-black">
-            <AdminSidebar />
-            <main className="flex-1 p-8 lg:p-12 overflow-y-auto max-h-screen">
-                {children}
-            </main>
-        </div>
+        <ResponsiveAdminLayout>
+            {children}
+        </ResponsiveAdminLayout>
     );
 }
