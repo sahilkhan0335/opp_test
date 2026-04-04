@@ -11,7 +11,9 @@ import {
     Settings,
     LogOut,
     FileText,
-    HelpCircle
+    HelpCircle,
+    UserPlus,
+    ExternalLink
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -19,7 +21,9 @@ const AdminSidebar = () => {
     const pathname = usePathname();
 
     const links = [
+        { href: "/", label: "View Public Site", icon: ExternalLink },
         { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
+        { href: "/admin/users", label: "Sub Admin", icon: UserPlus },
         { href: "/admin/waitlist", label: "Waitlist", icon: Users },
         { href: "/admin/contact", label: "Messages", icon: MessageSquare },
         { href: "/admin/careers", label: "Applications", icon: Briefcase },
