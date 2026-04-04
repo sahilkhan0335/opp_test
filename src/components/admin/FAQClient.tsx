@@ -11,7 +11,7 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import { Plus, Pencil, Trash2, Loader2 } from "lucide-react";
-import { createFAQ, updateFAQ, deleteFAQ } from "@/lib/actions";
+import { createFAQ, updateFAQ, deleteFAQ, deduplicateFAQs } from "@/lib/actions";
 import { toast } from "sonner";
 import {
     Table,
@@ -26,23 +26,24 @@ interface FAQ {
     id: number;
     question: string;
     answer: string;
+    order: number;
 }
 
 export function FAQClient({ faqs }: { faqs: FAQ[] }) {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [editingId, setEditingId] = useState<number | null>(null);
-    const [formData, setFormData] = useState({ question: "", answer: "" });
+    const [formData, setFormData] = useState({ question: "", answer: "", order: 0 });
     const [isPending, startTransition] = useTransition();
 
     const openCreate = () => {
         setEditingId(null);
-        setFormData({ question: "", answer: "" });
+        setFormData({ question: "", answer: "", order: faqs.length });
         setIsDialogOpen(true);
     };
 
     const openEdit = (faq: FAQ) => {
         setEditingId(faq.id);
-        setFormData({ question: faq.question, answer: faq.answer });
+        setFormData({ question: faq.question, answer: faq.answer, order: faq.order });
         setIsDialogOpen(true);
     };
 
@@ -82,6 +83,19 @@ export function FAQClient({ faqs }: { faqs: FAQ[] }) {
         });
     };
 
+    const handleDeduplicate = () => {
+        if (!confirm("Are you sure you want to remove all duplicate FAQs?")) return;
+
+        startTransition(async () => {
+            const result = await deduplicateFAQs();
+            if (result.success && 'removedCount' in result) {
+                toast.success(`Removed ${result.removedCount} duplicate FAQs`);
+            } else {
+                toast.error(result.error || "Failed to deduplicate");
+            }
+        });
+    }
+
     return (
         <div className="space-y-8">
             <div className="flex justify-between items-center">
@@ -89,9 +103,14 @@ export function FAQClient({ faqs }: { faqs: FAQ[] }) {
                     <h2 className="text-3xl font-bold tracking-tight">FAQ Management</h2>
                     <p className="text-muted-foreground">Add, edit, or remove frequently asked questions.</p>
                 </div>
-                <Button onClick={openCreate} className="gap-2">
-                    <Plus size={16} /> Add FAQ
-                </Button>
+                <div className="flex gap-2">
+                    <Button onClick={handleDeduplicate} variant="outline" className="gap-2" disabled={isPending}>
+                        <Trash2 size={16} /> Clean Duplicates
+                    </Button>
+                    <Button onClick={openCreate} className="gap-2">
+                        <Plus size={16} /> Add FAQ
+                    </Button>
+                </div>
             </div>
 
             <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm">
@@ -167,6 +186,15 @@ export function FAQClient({ faqs }: { faqs: FAQ[] }) {
                                 onChange={(e) => setFormData({ ...formData, answer: e.target.value })}
                                 placeholder="Enter the answer here..."
                                 rows={5}
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium">Order</label>
+                            <Input
+                                type="number"
+                                value={formData.order}
+                                onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) || 0 })}
+                                placeholder="0"
                             />
                         </div>
                         <Button onClick={handleSubmit} disabled={isPending} className="w-full">

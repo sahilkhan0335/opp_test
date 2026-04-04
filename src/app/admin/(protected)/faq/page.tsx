@@ -6,7 +6,7 @@ export const revalidate = 0;
 
 export default async function AdminFAQPage() {
     const faqs = await prisma.fAQ.findMany({
-        orderBy: { id: 'asc' },
+        orderBy: { order: 'asc' },
     });
 
     return <FAQClient faqs={faqs} />;
