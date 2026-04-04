@@ -381,7 +381,7 @@ export async function updateAdminUser(id: number, formData: FormData) {
     }
 
     try {
-        const data: any = { email };
+        const data: { email: string; password?: string } = { email };
         
         if (password && password.trim() !== "") {
             data.password = await hash(password, 12);
