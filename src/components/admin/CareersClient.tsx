@@ -37,7 +37,7 @@ interface Application {
 }
 
 export default function CareersClient({ initialData }: { initialData: Application[] }) {
-    const [isPending, startTransition] = useTransition();
+    const [, startTransition] = useTransition();
 
     const handleDelete = (id: number) => {
         if (!confirm("Are you sure?")) return;

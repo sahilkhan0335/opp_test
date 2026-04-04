@@ -31,7 +31,7 @@ export default function WaitlistClient({ initialData }: WaitlistClientProps) {
     const [data, setData] = useState(initialData);
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedItems, setSelectedItems] = useState<number[]>([]);
-    const [isPending, startTransition] = useTransition();
+    const [, startTransition] = useTransition();
 
     const filteredData = data.filter(
         (item) =>
