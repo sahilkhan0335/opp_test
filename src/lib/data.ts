@@ -37,7 +37,7 @@ export async function getSiteSettings() {
 export async function getWaitlistCount() {
     try {
         return await prisma.waitlistEntry.count();
-    } catch (error) {
+    } catch {
         return 0;
     }
 }
