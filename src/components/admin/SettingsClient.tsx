@@ -7,8 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
-import { updateFaqs, updateLegalContent, updateSiteSettings } from "@/lib/actions";
-import { Loader2, Plus, Trash2 } from "lucide-react";
+import { updateLegalContent, updateSiteSettings } from "@/lib/actions";
+import { Loader2 } from "lucide-react";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 
@@ -23,20 +23,12 @@ interface SiteSettings {
     showPhoneMockups: boolean;
 }
 
-interface FAQ {
-    id?: number;
-    question: string;
-    answer: string;
-    order: number;
-}
-
 interface SettingsClientProps {
     initialSettings: SiteSettings;
-    initialFaqs: FAQ[];
     initialLegal: { terms: string; privacy: string };
 }
 
-export default function SettingsClient({ initialSettings, initialFaqs, initialLegal }: SettingsClientProps) {
+export default function SettingsClient({ initialSettings, initialLegal }: SettingsClientProps) {
     const [isPending, startTransition] = useTransition();
 
     // General Settings
@@ -50,9 +42,6 @@ export default function SettingsClient({ initialSettings, initialFaqs, initialLe
         showWhy: initialSettings?.showWhy ?? true,
         showPhoneMockups: initialSettings?.showPhoneMockups ?? true,
     });
-
-    // FAQs
-    const [faqs, setFaqs] = useState(initialFaqs.map(f => ({ question: f.question, answer: f.answer })));
 
     // Legal
     const [legal, setLegal] = useState(initialLegal);
@@ -75,14 +64,6 @@ export default function SettingsClient({ initialSettings, initialFaqs, initialLe
         });
     };
 
-    const handleFaqSave = () => {
-        startTransition(async () => {
-            const result = await updateFaqs(faqs);
-            if (result.success) toast.success("FAQs updated!");
-            else toast.error("Failed to update FAQs");
-        });
-    }
-
     const handleTermsSave = () => {
         startTransition(async () => {
             const result = await updateLegalContent("terms", legal.terms);
@@ -99,15 +80,6 @@ export default function SettingsClient({ initialSettings, initialFaqs, initialLe
         });
     }
 
-    // FAQ Helpers
-    const addFaq = () => setFaqs([...faqs, { question: "", answer: "" }]);
-    const removeFaq = (idx: number) => setFaqs(faqs.filter((_, i) => i !== idx));
-    const updateFaq = (idx: number, field: 'question' | 'answer', val: string) => {
-        const newFaqs = [...faqs];
-        newFaqs[idx] = { ...newFaqs[idx], [field]: val };
-        setFaqs(newFaqs);
-    }
-
     return (
         <div className="space-y-6 max-w-4xl">
             <div className="mb-6">
@@ -118,7 +90,6 @@ export default function SettingsClient({ initialSettings, initialFaqs, initialLe
             <Tabs defaultValue="general" className="w-full">
                 <TabsList className="mb-4">
                     <TabsTrigger value="general">General</TabsTrigger>
-                    <TabsTrigger value="faqs">FAQs</TabsTrigger>
                     <TabsTrigger value="legal">Legal</TabsTrigger>
                 </TabsList>
 
@@ -172,45 +143,6 @@ export default function SettingsClient({ initialSettings, initialFaqs, initialLe
                                 {isPending && <Loader2 className="animate-spin mr-2 h-4 w-4" />} Save General Settings
                             </Button>
                         </div>
-                    </Card>
-                </TabsContent>
-
-                <TabsContent value="faqs">
-                    <Card className="p-6">
-                        <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-lg font-semibold">Frequently Asked Questions</h3>
-                            <Button onClick={addFaq} size="sm" variant="outline"><Plus className="mr-2 h-4 w-4" /> Add FAQ</Button>
-                        </div>
-                        <div className="space-y-4 max-h-150 overflow-y-auto pr-2">
-                            {faqs.map((faq, idx) => (
-                                <div key={idx} className="p-4 border rounded-md bg-muted/20 relative group">
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        className="absolute top-2 right-2 text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity"
-                                        onClick={() => removeFaq(idx)}
-                                    >
-                                        <Trash2 size={16} />
-                                    </Button>
-                                    <div className="space-y-3">
-                                        <Input
-                                            placeholder="Question"
-                                            value={faq.question}
-                                            onChange={e => updateFaq(idx, 'question', e.target.value)}
-                                        />
-                                        <Textarea
-                                            placeholder="Answer"
-                                            value={faq.answer}
-                                            onChange={e => updateFaq(idx, 'answer', e.target.value)}
-                                            rows={2}
-                                        />
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                        <Button onClick={handleFaqSave} className="mt-4" disabled={isPending}>
-                            Save FAQs
-                        </Button>
                     </Card>
                 </TabsContent>
 
